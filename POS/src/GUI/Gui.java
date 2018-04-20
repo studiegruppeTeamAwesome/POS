@@ -1,8 +1,13 @@
 package GUI;
 
+import java.util.ArrayList;
+
+import Data.DataConnection;
 import application.OrgEnhed;
 import application.Rolle;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,17 +27,26 @@ public class Gui extends Application implements EventHandler<ActionEvent> {
 	private Scene scene3;
 	private Button videre;
 	private Button bekræft;
+	private static ObservableList<Rolle> obsList;
+
 
 	
 	
 	@Override
 	public void start(Stage stage) throws Exception {
-				
+	
+		
+
+		
+		
+		
 		this.stage = stage;
 		
 		TextField id = new TextField();
 		Label idPrompt = new Label("Indtast medarbejderens id her");
 		ComboBox<Rolle> rolle = new ComboBox<Rolle>();
+		rolle.getItems().addAll(obsList);
+		
 		Label rollePrompt = new Label("Vælg medarbejderens rolle her");
 		ComboBox<OrgEnhed> enhed = new ComboBox<OrgEnhed>();
 		Label enhedPrompt = new Label("Vælg medarbejderens organisatoriske enhed her");
@@ -90,7 +104,15 @@ public class Gui extends Application implements EventHandler<ActionEvent> {
 		grid.setVgap(10);
 	}
 	public static void main(String[] args) {
+		
+		DataConnection connection = new DataConnection();
+		connection.openConnection();
+		ArrayList<Rolle> roller = connection.getAllRoller();
+		obsList = FXCollections.observableList(roller);
+		
 		launch(args);
+		
+		
 	}
 	@Override
 	public void handle(ActionEvent e) {
